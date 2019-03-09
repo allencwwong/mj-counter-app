@@ -1,52 +1,58 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { database } from "../firebase";
 import "./dashboard.css";
-import CurrentUser from "../components/CurrentUser";
 
 class Dashboard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: null
-    };
-    this.dataRef = null;
+  constructor(props) {
+    super(props);
+    this.gameroomsRef = database.ref("/gamerooms");
   }
-  componentDidMount() {
-    this.dataRef = database.ref("/gamerooms");
 
-    this.dataRef.on("value", snapshot => {
-      this.setState({
-        data: snapshot.val()
-      });
+  createGameRoom = () => {
+    const { user } = this.props;
+    // set host info
+    let host = {};
+    host[user.uid] = {
+      email: user.email,
+      displayName: user.displayName
+    };
+    console.log(host);
+    // push host info and create new game room in db
+    const gid = this.gameroomsRef.push({ players: host, status: "open" }).key;
+    console.log(gid);
+    // set states for new game room
+    this.gameroomsRef.child(gid).on("value", snapshot => {
+      // set host as in game user
+      database
+        .ref("/ingameusers")
+        .child(user.uid)
+        .set({ gid: gid, user: user.displayName });
+      // redirect to create page
+      this.props.history.push(`/create/${gid}?uid=${user.uid}`);
     });
-  }
+  };
 
   render() {
     const { user } = this.props;
+    console.log(user.email, user.displayName, user.uid);
     return (
       <div>
-        <CurrentUser user={user} />
+        welcome,
+        {user.displayName}
         <div className="row">
-          <Link
-            to={{
-              pathname: "/create",
-              state: {
-                email: user.email,
-                uid: user.uid,
-                displayName: user.displayName
-              }
-            }}
-          >
-            <button className="btn btn-primary">Create new game</button>
-          </Link>
+          <button onClick={this.createGameRoom} className="btn btn-primary">
+            Create new game
+          </button>
           <Link
             to={{
               pathname: "/join",
               state: {
-                email: user.email,
-                uid: user.uid,
-                displayName: user.displayName
+                user: {
+                  email: user.email,
+                  uid: user.uid,
+                  displayName: user.displayName
+                }
               }
             }}
           >
@@ -58,4 +64,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

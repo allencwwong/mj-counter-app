@@ -19,7 +19,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/join" component={Join} />
-          <Route path="/create" component={Create} />
+          <Route path="/create/:gid" component={Create} />
         </Switch>
         <Footer />
       </div>
