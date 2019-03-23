@@ -15,13 +15,12 @@ class JoinGameList extends Component {
 
   handleJoinClick = gid => {
     const { user } = this.props;
-    console.log(this.state);
     // check user
     if (this.state.inGame) {
       // alert already in a game redirect to game page
       alert("already in game pls leave game to join new");
       // redirect to game room
-      this.props.history.push(`/create/${gid}?uid=${user.uid}`); // unsafe or not good practice to show uid??
+      this.props.history.push(`/gameroom/${gid}?uid=${user.uid}`);
     } else {
       // let user join game
 
@@ -35,7 +34,7 @@ class JoinGameList extends Component {
         .set({ gid: gid, user: user.displayName });
 
       // redirect to game room
-      this.props.history.push(`/create/${gid}?uid=${user.uid}`);
+      this.props.history.push(`/gameroom/${gid}?uid=${user.uid}`);
     }
   };
 

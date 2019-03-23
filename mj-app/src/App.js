@@ -4,7 +4,7 @@ import "./App.css";
 import Home from "./pages/home";
 import Dashboard from "./pages/dashboard";
 import Join from "./pages/join";
-import Create from "./pages/create";
+import Gameroom from "./pages/gameroom";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 
@@ -19,7 +19,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/join" component={Join} />
-          <Route path="/create/:gid" component={Create} />
+          <Route path="/gameroom/:gid" component={Gameroom} />
         </Switch>
         <Footer />
       </div>

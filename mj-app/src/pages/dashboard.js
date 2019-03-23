@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { database } from "../firebase";
+import { database, auth } from "../firebase";
 import "./dashboard.css";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.gameroomsRef = database.ref("/gamerooms");
+    this.inGameUsers = database.ref("/ingameusers");
+    this.state = {
+      user: this.props.user
+    };
   }
 
   createGameRoom = () => {
@@ -19,27 +23,45 @@ class Dashboard extends Component {
     };
     console.log(host);
     // push host info and create new game room in db
-    const gid = this.gameroomsRef.push({ players: host, status: "open" }).key;
-    console.log(gid);
-    // set states for new game room
-    this.gameroomsRef.child(gid).on("value", snapshot => {
-      // set host as in game user
-      database
-        .ref("/ingameusers")
-        .child(user.uid)
-        .set({ gid: gid, user: user.displayName });
-      // redirect to create page
-      this.props.history.push(`/create/${gid}?uid=${user.uid}`);
+    const gid = this.gameroomsRef.push({
+      players: host,
+      status: "open",
+      host: user.uid
+    }).key;
+
+    console.log(user.uid);
+    // set host as in game user
+    this.inGameUsers
+      .child(user.uid)
+      .set({ gid: gid, user: user.displayName })
+      .then(() => {
+        // redirect to create page
+        this.props.history.push(`/gameroom/${gid}?uid=${user.uid}`);
+      });
+  };
+
+  handleLogOut = () => {
+    auth.signOut().then(() => {
+      this.setState({
+        user: {
+          email: "",
+          displayName: "",
+          uid: ""
+        }
+      });
     });
   };
 
   render() {
-    const { user } = this.props;
+    const { user } = this.state;
     console.log(user.email, user.displayName, user.uid);
     return (
       <div>
         welcome,
-        {user.displayName}
+        {user.displayName} ,{" "}
+        <a href="#" onClick={this.handleLogOut}>
+          logout
+        </a>
         <div className="row">
           <button onClick={this.createGameRoom} className="btn btn-primary">
             Create new game

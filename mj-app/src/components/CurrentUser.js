@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { auth } from "../firebase";
 
 const CurrentUser = ({ user }) => {
   console.log("currentuser:", user);

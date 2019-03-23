@@ -17,17 +17,19 @@ class Join extends Component {
       .orderByChild("status")
       .equalTo("open")
       .on("value", snapshot => {
-        console.log(snapshot.val());
-        this.setState({
-          gamerooms: snapshot.val(),
-          status: true
-        });
+        if (snapshot.val()) {
+          this.setState({
+            gamerooms: snapshot.val(),
+            status: true
+          });
+        }
       });
   }
 
   render() {
     const { user } = this.props.location.state;
     // console.log(this.props.location.state);
+    console.log(user);
     const { gamerooms, status } = this.state;
     return (
       <div>
@@ -35,7 +37,7 @@ class Join extends Component {
         {status ? (
           <JoinGameList gamerooms={gamerooms} user={user} />
         ) : (
-          "loading"
+          "looking for rooms"
         )}
       </div>
     );
