@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { database } from "../firebase";
 import GameAddScore from "./GameAddScore";
+import GameScores from "./GameScores";
 
 class GameScoreBoard extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.gameroomsRef = database.ref("/gamerooms");
     this.state = {
       isLoaded: false,
@@ -43,7 +44,7 @@ class GameScoreBoard extends Component {
             <thead>
               <tr>{renderPlayerList()}</tr>
             </thead>
-            <tbody />
+            <GameScores gid={this.props.gid} />
           </table>
           <div className="container">
             <div className="row">
@@ -55,7 +56,12 @@ class GameScoreBoard extends Component {
               </button>
             </div>
           </div>
-          <GameAddScore show={this.state.modalShow} onHide={modalClose} />
+          <GameAddScore
+            show={this.state.modalShow}
+            onHide={modalClose}
+            uid={this.props.uid}
+            gid={this.props.gid}
+          />
         </div>
       );
     }

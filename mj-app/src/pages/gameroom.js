@@ -42,10 +42,12 @@ class Gameroom extends Component {
       if (players) {
         if (snapVar.status === "started") {
           console.log(snapVar.status);
+          console.log(params.uid);
           this.setState({
             status: "started",
             started: true,
-            gid: gid
+            gid: gid,
+            uid: params.uid
           });
         } else if (snapVar.status === "cancelled") {
           // check gameroom players remove all from ingame
@@ -77,7 +79,7 @@ class Gameroom extends Component {
   }
 
   render() {
-    const { players, status, uid, gid } = this.state;
+    const { players, status, uid, gid, host } = this.state;
     if (status === "cancelled") {
       this.props.history.push(`/?uid=${uid}`);
       return <div>exit room</div>;
@@ -86,15 +88,16 @@ class Gameroom extends Component {
       return (
         <div>
           <h1>Game Room#{gid}</h1>
-          <h2>Players</h2>
+          <h2>Players in room:</h2>
           {status ? <GamePlayerList players={players} /> : "creating game room"}
+          {status ? <GamePreStart gid={gid} uid={uid} host={host} /> : ""}
         </div>
       );
     } else if (status === "started") {
       return (
         <div>
           <h1>Game Room#{gid}</h1>
-          <GameScoreBoard />
+          <GameScoreBoard uid={uid} gid={gid} />
         </div>
       );
     } else {
