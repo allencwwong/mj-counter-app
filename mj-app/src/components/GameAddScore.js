@@ -122,7 +122,8 @@ class GameScoreBoard extends Component {
                         // refactor to create calc score instead of copy and pasting
                         results[uid].pointsValue = 2 ** (this.state.points + 2);
                     } else {
-                        results[uid].pointsValue = 2 ** (this.state.points + 1);
+                        results[uid].pointsValue =
+                            2 ** (this.state.points + 1) * 3;
                     }
                 } else {
                     results[uid] = {

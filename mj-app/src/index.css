@@ -12,3 +12,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* ============================ */
+/* game score board             */
+/* ============================ */
+
+.gsb-start-btn{
+  right:50px;
+  bottom:50px;
+  border-radius: 50%;
+  width:80px;
+  height:80px;
+  box-shadow: 1px 2px 6px #333;
+}
+
