@@ -6,6 +6,7 @@ import Dashboard from "./pages/dashboard";
 import Join from "./pages/join";
 import Gameroom from "./pages/gameroom";
 import History from "./pages/history";
+import GameDetails from "./pages/gameDetails";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 
@@ -18,6 +19,7 @@ class App extends Component {
         </header>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/history/:gid" component={GameDetails} />
           <Route path="/history" component={History} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/join" component={Join} />
