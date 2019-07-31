@@ -11,21 +11,14 @@ export default class history extends Component {
     pastGames.on(
       "value",
       snapshot => {
-        console.log(snapshot.val());
-        this.setState({
-          pastGames: snapshot.val()
+        let data = snapshot.val();
+        let filterGames = Object.keys(data).filter(game => {
+          return data[game].status !== "cancelled";
         });
-      },
-      error => {
-        console.log("Error: " + error.code);
-      }
-    );
 
-    let singleGame = database.ref("gamerooms").child("-LctmFOCGsQvvQ4rpqne");
-    singleGame.on(
-      "value",
-      snapshot => {
-        console.log(snapshot.val());
+        this.setState({
+          pastGames: filterGames
+        });
       },
       error => {
         console.log("Error: " + error.code);
@@ -34,10 +27,10 @@ export default class history extends Component {
   }
   renderPastGames() {
     if (this.state.pastGames) {
-      return Object.keys(this.state.pastGames).map(game => {
+      return this.state.pastGames.map(gid => {
         return (
-          <a href={"/history/" + game} key={game} style={{ display: "block" }}>
-            {game}
+          <a href={"/history/" + gid} key={gid} style={{ display: "block" }}>
+            {gid}
           </a>
         );
       });
