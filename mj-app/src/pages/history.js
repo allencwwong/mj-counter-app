@@ -12,6 +12,7 @@ export default class history extends Component {
       "value",
       snapshot => {
         let data = snapshot.val();
+        console.log(data);
         let filterGames = Object.keys(data).filter(game => {
           return data[game].status !== "cancelled";
         });
