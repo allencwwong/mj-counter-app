@@ -36,7 +36,7 @@ export default class gameDetails extends Component {
               }
               if (status === "loser") {
                 if (winType === "all") {
-                  mjScore = -Math.abs(Math.pow(2, points + 1)) * 3;
+                  mjScore = -Math.abs(Math.pow(2, points + 1));
                 } else {
                   mjScore = -Math.abs(Math.pow(2, points + 2));
                 }
